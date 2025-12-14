@@ -30,10 +30,31 @@ request - every request hitting our API.  REQUEST : GET user/data 200 ok
 
 ### Describe how you will log your FastAPI backend in production:
 
-API logs
 
-error logs
+In production, I will set up a structured logging system for FastAPI with separate log files:
 
-request logs
+1. API Logs (INFO level):
+   - Track normal operations such as app start, route loading, database connections.
+   - Logged into logs/api.log.
 
-separate log files
+2. Error Logs (ERROR level):
+   - Capture exceptions, database errors, and crashes.
+   - Logged into logs/error.log as a dedicated error logger.
+
+3. Request Logs (via middleware):
+   - Every incoming request is logged with method, endpoint, status code, and response time.
+   - Logged into logs/requests.log.
+
+4. Separate Log Files:
+   - api.log → general info
+   - error.log → errors only
+   - requests.log → request audit trail
+   This keeps logs clean and easy to debug.
+
+5. Log Rotation:
+   - Use logrotate to rotate logs daily, compress old logs, and prevent disk growth.
+
+6. Process Manager:
+   - systemd or supervisor captures startup/shutdown logs via journalctl.
+
+This logging structure ensures clean debugging, monitoring, and production stability.
